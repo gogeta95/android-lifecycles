@@ -16,7 +16,9 @@
 
 package com.example.android.lifecycles.step1;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Chronometer;
 
@@ -32,6 +34,14 @@ public class ChronoActivity1 extends AppCompatActivity {
 
         Chronometer chronometer = (Chronometer) findViewById(R.id.chronometer);
 
-        chronometer.start();
+        ChronometerViewModel viewModel = ViewModelProviders.of(this).get(ChronometerViewModel.class);
+
+        if (viewModel.getStartDate()==null){
+            long startDate = SystemClock.elapsedRealtime();
+            viewModel.setStartDate(startDate);
+        }
+        chronometer.setBase(viewModel.getStartDate());
+
+                chronometer.start();
     }
 }
